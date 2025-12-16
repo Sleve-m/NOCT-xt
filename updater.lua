@@ -1,7 +1,7 @@
 local HttpService = game:GetService("HttpService")
 
 local updater = {}
-local config = import("NOCT-xt/config.lua")
+local config = loadstring(readfile("NOCT-xt/config.lua"))()
 
 local url = "https://raw.githubusercontent.com/Sleve-m/NOCT-xt/refs/heads/main/"
 
