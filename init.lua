@@ -1,6 +1,13 @@
 local HttpService = game:GetService("HttpService")
 local environment = getgenv
-import = environment.import
+local function useMethods(module)
+    for name, method in pairs(module) do
+        if method then
+            environment[name] = method
+        end
+    end
+end
+useMethods({import = environment.import})
 local url = "https://raw.githubusercontent.com/Sleve-m/NOCT-xt/refs/heads/main/"
 if not isfile("NOCT-xt/config.lua") then
     print("NOCT-xt: Performing First-Time Install...")
