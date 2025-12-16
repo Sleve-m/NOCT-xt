@@ -17,30 +17,44 @@ config.Default = {
     }
 }
 
-config.Settings = HttpService:JSONDecode(HttpService:JSONEncode(config.default))
+config.Settings = HttpService:JSONDecode(HttpService:JSONEncode(config.Default))
+
+config.FileName = "NOCT-xt/settings.json"
 
 function config:Save()
     local json = HttpService:JSONEncode(config.Settings)
+    
+    if not isfolder("NOCT-xt") then makefolder("NOCT-xt") end
+    
     writefile(self.FileName, json)
 end
 
 function config:Load()
     if isfile(self.FileName) then
         local content = readfile(self.FileName)
-        local decoded = HttpService:JSONDecode(content)
-        for category, values in pairs(decoded) do
-            if config.Settings[category] then
-                for setting, value in pairs(values) do
-                    config.Settings[category][setting] = value
+        local success, decoded = pcall(function() return HttpService:JSONDecode(content) end)
+        
+        if success and decoded then
+            for key, value in pairs(decoded) do
+                if config.Settings[key] ~= nil then
+                    if type(value) == "table" and type(config.Settings[key]) == "table" then
+                        for setting, val in pairs(value) do
+                            config.Settings[key][setting] = val
+                        end
+                    else
+                        config.Settings[key] = value
+                    end
                 end
             end
+        else
+            warn("Failed to decode config JSON")
         end
     else
         self:Save()
     end
 end
 
-local dependencies = {
+config.dependencies = {
     "updater.lua",
     "methods/environment.lua",
     "methods/string.lua",
@@ -63,29 +77,5 @@ function config:checkDependencies()
     end
     return missingDependencies
 end
-
---[[
-local Library = loadstring(game:HttpGet("..."))() -- Assuming you use a UI Library
-local Config = require(path_to_config_above)
-
--- Initialize Config
-Config:Load()
-
-local Window = Library:CreateWindow("My Script")
-local Tab = Window:CreateTab("Main")
-
--- Create the Toggle
-local AimToggle = Tab:CreateToggle({
-    Name = "Enable Aimbot",
-    CurrentValue = Config.Settings.Aimbot.Enabled, -- Set initial state from config
-    Callback = function(Value)
-        -- 1. Update the table in memory
-        Config.Settings.Aimbot.Enabled = Value
-        
-        -- 2. Save immediately (or use a Save Button)
-        Config:Save() 
-    end
-})
-]]
 
 return config
