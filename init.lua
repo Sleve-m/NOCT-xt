@@ -7,10 +7,10 @@ if not isfile("NOCT-xt/config.lua") then
         return loadstring(game:HttpGet(url .. "config.lua"))()
     end)
 
-    if success and remoteConfig and remoteConfig.Dependencies then
+    if success and remoteConfig and remoteConfig.dependencies then
         writefile("NOCT-xt/config.lua", game:HttpGet(url .. "config.lua"))
 
-        for _, dependency in pairs(remoteConfig.Dependencies) do
+        for _, dependency in pairs(remoteConfig.dependencies) do
             local content = game:HttpGet(url .. dependency)
             
             if dependency:find("/") then

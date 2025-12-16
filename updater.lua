@@ -6,7 +6,7 @@ local config = import("NOCT-xt/config")
 local url = "https://raw.githubusercontent.com/Sleve-m/NOCT-xt/refs/heads/main/"
 
 function updater:updateNOCTxt()
-    local dependencies = config.Dependencies 
+    local dependencies = config.dependencies 
 
     if not dependencies then 
         warn("Updater failed: Could not find dependencies list in config.")
