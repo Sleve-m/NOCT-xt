@@ -5,28 +5,7 @@ local url = "https://raw.githubusercontent.com/Sleve-m/NOCT-xt/refs/heads/main/"
 if not isfile("NOCT-xt/config.lua") then
     print("NOCT-xt: Performing First-Time Install...")
 
-    local success, remoteConfig = pcall(function()
-        return loadstring(game:HttpGet(url .. "config.lua"))()
-    end)
-
-    if success and remoteConfig and remoteConfig.dependencies then
-        writefile("NOCT-xt/config.lua", game:HttpGet(url .. "config.lua"))
-
-        for _, dependency in pairs(remoteConfig.dependencies) do
-            local content = game:HttpGet(url .. dependency)
-            
-            if dependency:find("/") then
-                local folder = "NOCT-xt/" .. dependency:match("^(.*)/")
-                if not isfolder(folder) then makefolder(folder) end
-            end
-            
-            writefile("NOCT-xt/" .. dependency, content)
-            print("Installed: " .. dependency)
-        end
-        print("Finished install")
-    else
-        return warn("NOCT-xt: Failed to fetch install list from GitHub.")
-    end
+    loadstring(game:HttpGet(url.."installer.lua"))
 end
 
 local noctCanStart = true
