@@ -1,4 +1,6 @@
 local HttpService = game:GetService("HttpService")
+local environment = getgenv
+import = environment.import
 local url = "https://raw.githubusercontent.com/Sleve-m/NOCT-xt/refs/heads/main/"
 if not isfile("NOCT-xt/config.lua") then
     print("NOCT-xt: Performing First-Time Install...")
@@ -28,11 +30,9 @@ if not isfile("NOCT-xt/config.lua") then
 end
 
 local noctCanStart = true
-local testimp = import("NOCT-xt/methods/fileimport")
-local testfimport = testimp.importfile()
-local fimport = loadstring(readfile("NOCT-xt/methods/fileimport.lua"))().importfile()
-local Updater = fimport("NOCT-xt/updater.lua")
-local Config = fimport("NOCT-xt/config.lua")
+--local fimport = loadstring(readfile("NOCT-xt/methods/fileimport.lua"))().importfile()
+local Updater = import("NOCT-xt/updater.lua")
+local Config = import("NOCT-xt/config.lua")
 
 if Config.Settings.autoupdate then 
     if Updater:checkForUpdates() then 
