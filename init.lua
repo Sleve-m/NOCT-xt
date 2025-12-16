@@ -1,5 +1,5 @@
 local HttpService = game:GetService("HttpService")
-local environment = getgenv
+local environment = getgenv()
 
 local url = "https://raw.githubusercontent.com/Sleve-m/NOCT-xt/refs/heads/main/"
 if not isfile("NOCT-xt/config.lua") then
@@ -30,7 +30,16 @@ if not isfile("NOCT-xt/config.lua") then
 end
 
 local noctCanStart = true
---local fimport = loadstring(readfile("NOCT-xt/methods/fileimport.lua"))().importfile()
+local fimport = loadstring(readfile("NOCT-xt/methods/fileimport.lua"))().importfile()
+local function useMethods(module)
+    for name, method in pairs(module) do
+        if method then
+            environment[name] = method
+        end
+    end
+end
+
+useMethods({ import = fimport })
 local Updater = loadstring(readfile("NOCT-xt/updater.lua"))()
 local Config = loadstring(readfile("NOCT-xt/config.lua"))()
 
@@ -59,19 +68,10 @@ else
     print("NOCT-xt: All dependencies loaded. Starting...")
 end
 
-local function useMethods(module)
-    for name, method in pairs(module) do
-        if method then
-            environment[name] = method
-        end
-    end
-end
-
-useMethods({ import = environment.import })
-useMethods(import("methods/string"))
-useMethods(import("methods/table"))
-useMethods(import("methods/userdata"))
-useMethods(import("methods/environment"))
+useMethods(import("NOCT-xt/methods/string.lua"))
+useMethods(import("NOCT-xt/methods/table.lua"))
+useMethods(import("NOCT-xt/methods/userdata.lua"))
+useMethods(import("NOCT-xt/methods/environment.lua"))
 
 --[[
 local UserInputService = game:GetService("UserInputService")

@@ -62,6 +62,7 @@ config.dependencies = {
     "methods/string.lua",
     "methods/table.lua",
     "methods/userdata.lua",
+    "methods/fileimport.lua",
     "modules/RemoteSpy.lua",
     "objects/Remote.lua",
     "ui/create.lua",
@@ -72,7 +73,7 @@ config.dependencies = {
 function config:checkDependencies()
     local missingDependencies = {}
     local header = "NOCT-xt/"
-    for index, dependency in pairs(dependencies) do
+    for index, dependency in pairs(self.dependencies) do
         if not isfile(header..dependency) then
             table.insert(missingDependencies, dependency)
         end
