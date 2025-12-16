@@ -28,8 +28,7 @@ if not isfile("NOCT-xt/config.lua") then
 end
 
 local noctCanStart = true
-local fileImport = loadstring(readfile("NOCT-xt/methods/fileimport.lua"))()
-local fimport = fileImport.importfile()
+local fimport = loadstring(readfile("NOCT-xt/methods/fileimport.lua"))().importfile()
 local Updater = fimport("NOCT-xt/updater.lua")
 local Config = fimport("NOCT-xt/config.lua")
 
