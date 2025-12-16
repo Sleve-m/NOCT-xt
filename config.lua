@@ -7,9 +7,9 @@ config.Version = "v1.0.0.0a" -- Do not touch, this is used by updater.lua to aut
 config.Default = {
     autoupdate = true,
     controls = {
-        sidescroll = Enum.LeftControl,
-        groupselect = Enum.LeftShift,
-        addselect = Enum.LeftControl
+        sidescroll = Enum.KeyCode.LeftControl,
+        groupselect = Enum.KeyCode.LeftShift,
+        addselect = Enum.KeyCode.LeftControl
     },
     ui = {
         sizeratio = 1.3,
