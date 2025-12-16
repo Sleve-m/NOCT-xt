@@ -41,22 +41,23 @@ function config:Load()
 end
 
 local dependencies = {
-    "NOCT-xt/updater.lua",
-    "NOCT-xt/methods/environment.lua",
-    "NOCT-xt/methods/string.lua",
-    "NOCT-xt/methods/table.lua",
-    "NOCT-xt/methods/userdata.lua",
-    "NOCT-xt/modules/RemoteSpy.lua",
-    "NOCT-xt/objects/Remote.lua",
-    "NOCT-xt/ui/create.lua",
-    "NOCT-xt/ui/functions.lua",
-    "NOCT-xt/ui/sizing.lua"
+    "updater.lua",
+    "methods/environment.lua",
+    "methods/string.lua",
+    "methods/table.lua",
+    "methods/userdata.lua",
+    "modules/RemoteSpy.lua",
+    "objects/Remote.lua",
+    "ui/create.lua",
+    "ui/functions.lua",
+    "ui/sizing.lua"
 }
 
 function config:checkDependencies()
     local missingDependencies = {}
+    local header = "NOCT-xt/"
     for index, dependency in pairs(dependencies) do
-        if not isfile(dependency) then
+        if not isfile(header..dependency) then
             table.insert(missingDependencies, dependency)
         end
     end

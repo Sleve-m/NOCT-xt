@@ -1,6 +1,11 @@
-local url = "https://github.com/Sleve-m/"
+local HttpService = game:GetService("HttpService")
+local url = "https://raw.githubusercontent.com/Sleve-m/NOCT-xt/refs/heads/main/"
 if not isfile("NOCT-xt/config.lua") then
-
+    local dependencies = import(loadstring(game:HttpGet(url.."config.lua"))()).dependencies
+    for index, dependency in pairs(dependencies) do
+        local content = game:HttpGet(url..dependency)
+        writefile(dependency, content)
+    end
 end
 
 local noctCanStart = true
@@ -28,5 +33,5 @@ local ReflectionsService = game:GetService("ReflectionService")
 local coregui = game:GetService("CoreGui")
 local TextService = game:GetService("TextService")
 local MarketplaceService = game:GetService("MarketplaceService")
-local HttpService = game:GetService("HttpService")
+
 
