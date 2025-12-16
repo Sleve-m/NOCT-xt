@@ -31,8 +31,8 @@ end
 
 local noctCanStart = true
 --local fimport = loadstring(readfile("NOCT-xt/methods/fileimport.lua"))().importfile()
-local Updater = readfile("NOCT-xt/updater.lua")
-local Config = readfile("NOCT-xt/config.lua")
+local Updater = loadstring(readfile("NOCT-xt/updater.lua"))()
+local Config = loadstring(readfile("NOCT-xt/config.lua"))()
 
 if Config.Settings.autoupdate then 
     if Updater:checkForUpdates() then 
