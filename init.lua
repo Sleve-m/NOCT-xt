@@ -5,7 +5,7 @@ local url = "https://raw.githubusercontent.com/Sleve-m/NOCT-xt/refs/heads/main/"
 if not isfile("NOCT-xt/config.lua") then
     print("NOCT-xt: Performing First-Time Install...")
 
-    loadstring(game:HttpGet(url.."installer.lua"))
+    loadstring(game:HttpGet(url.."installer.lua"))()
 end
 
 local noctCanStart = true
