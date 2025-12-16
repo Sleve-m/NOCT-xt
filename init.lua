@@ -28,8 +28,8 @@ if not isfile("NOCT-xt/config.lua") then
 end
 
 local noctCanStart = true
-local Updater = import("NOCT-xt/updater")
-local Config = import("NOCT-xt/config")
+local Updater = import("NOCT-xt/updater.lua")
+local Config = import("NOCT-xt/config.lua")
 
 if Config.Settings.autoupdate then 
     if Updater:checkForUpdates() then 
