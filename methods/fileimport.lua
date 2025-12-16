@@ -1,6 +1,6 @@
 local fileImport = {}
 
-funciton fileImport.importfile(path)
+function fileImport.importfile(path) 
     return loadstring(readfile(path))()
 end
 

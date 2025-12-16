@@ -30,7 +30,11 @@ if not isfile("NOCT-xt/config.lua") then
 end
 
 local noctCanStart = true
-local fimport = loadstring(readfile("NOCT-xt/methods/fileimport.lua"))().importfile()
+local fimport = loadstring(readfile("NOCT-xt/methods/fileimport.lua"))().importfile 
+
+local Updater = fimport("NOCT-xt/updater.lua")
+local Config = loadstring(readfile("NOCT-xt/config.lua"))()
+
 local function useMethods(module)
     for name, method in pairs(module) do
         if method then
@@ -40,8 +44,7 @@ local function useMethods(module)
 end
 
 useMethods({ import = fimport })
-local Updater = loadstring(readfile("NOCT-xt/updater.lua"))()
-local Config = loadstring(readfile("NOCT-xt/config.lua"))()
+
 
 if Config.Settings.autoupdate then 
     if Updater:checkForUpdates() then 
