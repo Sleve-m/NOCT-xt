@@ -21,6 +21,7 @@ if not isfile("NOCT-xt/config.lua") then
             writefile("NOCT-xt/" .. dependency, content)
             print("Installed: " .. dependency)
         end
+        print("Finished install")
     else
         return warn("NOCT-xt: Failed to fetch install list from GitHub.")
     end

@@ -55,6 +55,8 @@ function config:Load()
 end
 
 config.dependencies = {
+    "init.lua",
+    "config.lua",
     "updater.lua",
     "methods/environment.lua",
     "methods/string.lua",
