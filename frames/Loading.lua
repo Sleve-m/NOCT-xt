@@ -3,8 +3,9 @@ local Loading = {}
 function Loading.createLoadingUI()
     local loadingui = Instance.new("TextLabel")
     loadingui.Text = "NOCT xt"
-    loadingui.Size = UDim2.new(0,240,0,75)
-    loadingui.Position = UDim2.new(0.5,-230,0.5,-40)
+    loadingui.Font = Enum.Font.Unbuntu
+    loadingui.Size = UDim2.new(0,150,0,45)
+    loadingui.Position = UDim2.new(0.5,-75,0.5,-22)
     loadingui.BorderSizePixel = 0
     loadingui.BackgroundColor3 = Color3.new(0,0,0)
     loadingui.TextColor3 = Color3.fromRGB(200,200,200)
