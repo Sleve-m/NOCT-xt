@@ -59,16 +59,18 @@ config.dependencies = {
     "config.lua",
     "updater.lua",
     "main.lua",
+    "frames/Loading.lua",
     "methods/environment.lua",
+    "methods/fileimport.lua",
     "methods/string.lua",
     "methods/table.lua",
     "methods/userdata.lua",
-    "methods/fileimport.lua",
     "modules/RemoteSpy.lua",
     "objects/Remote.lua",
     "ui/create.lua",
     "ui/functions.lua",
-    "ui/sizing.lua"
+    "ui/sizing.lua",
+    "ui/uibuilder.lua"
 }
 
 function config:checkDependencies()
