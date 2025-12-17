@@ -71,14 +71,6 @@ useMethods(import("NOCT-xt/methods/table.lua"))
 useMethods(import("NOCT-xt/methods/userdata.lua"))
 useMethods(import("NOCT-xt/methods/environment.lua"))
 
---[[
-local UserInputService = game:GetService("UserInputService")
-local RunService = game:GetService("RunService")
-local ContextActionService = game:GetService("ContextActionService")
-local sinkaction = "NOCT_SinkScroll"
-local ReflectionsService = game:GetService("ReflectionService")
-local coregui = game:GetService("CoreGui")
-local TextService = game:GetService("TextService")
-local MarketplaceService = game:GetService("MarketplaceService")
-]]
+loadstring(readfile("NOCT-xt/main.lua"))()
+
 
