@@ -13,7 +13,7 @@ if not isfile("NOCT-xt/config.lua") then
     local successs, remoteUpdaterGet = pcall(function()
         return game:HttpGet(url .. "updater.lua")
     end)
-    if success and success2 then
+    if success and successs then
         writefile("NOCT-xt/config.lua", remoteConfigGet)
         local dependencies = loadstring(remoteConfigGet)().dependencies
         local remoteUpdater = loadstring(remoteUpdaterGet)()
