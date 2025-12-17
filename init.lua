@@ -4,6 +4,9 @@ local environment = getgenv()
 local url = "https://raw.githubusercontent.com/Sleve-m/NOCT-xt/refs/heads/main/"
 if not isfile("NOCT-xt/config.lua") then
     print("NOCT-xt: Performing First-Time Install...")
+    if not isfolder("NOCT-xt") then
+        makefolder("NOCT-xt")
+    end
     local success, remoteConfigGet = pcall(function()
         return game:HttpGet(url .. "config.lua")
     end)
