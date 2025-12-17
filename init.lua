@@ -26,6 +26,25 @@ if not isfile("NOCT-xt/config.lua") then
 end
 
 local noctCanStart = true
+
+local checkedDependencies = Config:checkDependencies()
+
+if #checkedDependencies > 0 then
+    local warningMessage = "NOCT-xt is missing dependencies: "
+    
+    for index, missingDependency in pairs(checkedDependencies) do
+        warningMessage = warningMessage .. missingDependency
+        
+        if index ~= #checkedDependencies then 
+            warningMessage = warningMessage .. ", " 
+        end
+    end
+    warn(warningMessage)
+    
+else
+    print("NOCT-xt: All dependencies loaded. Starting...")
+end
+
 local fimport = loadstring(readfile("NOCT-xt/methods/fileimport.lua"))().importfile
 
 local function useMethods(module)
@@ -46,24 +65,6 @@ if Config.Settings.autoupdate then
         Updater:updateNOCTxt()
         Config = fimport("NOCT-xt/config.lua")
     end 
-end
-
-local checkedDependencies = Config:checkDependencies()
-
-if #checkedDependencies > 0 then
-    local warningMessage = "NOCT-xt is missing dependencies: "
-    
-    for index, missingDependency in pairs(checkedDependencies) do
-        warningMessage = warningMessage .. missingDependency
-        
-        if index ~= #checkedDependencies then 
-            warningMessage = warningMessage .. ", " 
-        end
-    end
-    warn(warningMessage)
-    
-else
-    print("NOCT-xt: All dependencies loaded. Starting...")
 end
 
 useMethods(import("NOCT-xt/methods/string.lua"))
