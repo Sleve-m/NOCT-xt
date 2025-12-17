@@ -25,6 +25,21 @@ if not isfile("NOCT-xt/config.lua") then
     end
 end
 
+local fimport = loadstring(readfile("NOCT-xt/methods/fileimport.lua"))().importfile
+
+local function useMethods(module)
+    for name, method in pairs(module) do
+        if method then
+            environment[name] = method
+        end
+    end
+end
+
+useMethods({ import = fimport })
+
+local Updater = fimport("updater.lua")
+local Config = fimport("config.lua")
+
 local noctCanStart = true
 
 local checkedDependencies = Config:checkDependencies()
@@ -45,25 +60,10 @@ else
     print("NOCT-xt: All dependencies loaded. Starting...")
 end
 
-local fimport = loadstring(readfile("NOCT-xt/methods/fileimport.lua"))().importfile
-
-local function useMethods(module)
-    for name, method in pairs(module) do
-        if method then
-            environment[name] = method
-        end
-    end
-end
-
-useMethods({ import = fimport })
-
-local Updater = fimport("NOCT-xt/updater.lua")
-local Config = fimport("NOCT-xt/config.lua")
-
 if Config.Settings.autoupdate then 
     if Updater:checkForUpdates() then 
         Updater:updateNOCTxt()
-        Config = fimport("NOCT-xt/config.lua")
+        Config = fimport("config.lua")
     end 
 end
 
@@ -73,5 +73,3 @@ useMethods(import("NOCT-xt/methods/userdata.lua"))
 useMethods(import("NOCT-xt/methods/environment.lua"))
 
 loadstring(readfile("NOCT-xt/main.lua"))()
-
-

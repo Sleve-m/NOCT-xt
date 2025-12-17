@@ -7,6 +7,6 @@ local coregui = game:GetService("CoreGui")
 local TextService = game:GetService("TextService")
 local MarketplaceService = game:GetService("MarketplaceService")
 
-print("Main opened")
+local Config = fimport("Config.lua")
 
 print(Config.dependencies[1])
