@@ -8,7 +8,7 @@ local colors = {
     selected = Color3.fromRGB(64,64,200)
 }
 
-local textStyles = {
+CreateUI.textStyles = {
     deftext = {
         BackgroundColor3 = colors.black,
         BackgroundTransparency = 1,
@@ -35,11 +35,11 @@ local textStyles = {
     }
 }
 
-function grad2(c1,c2)
+function CreateUI.grad2(c1,c2)
 	return ColorSequence.new({ColorSequenceKeypoint.new(0, c1), ColorSequenceKeypoint.new(1, c2)})
 end
 
-local colorgrads = {
+CreateUI.colorgrads = {
 	ColorSequence.new({ColorSequenceKeypoint.new(0, colors.purewhite), ColorSequenceKeypoint.new(0.68, Color3.fromRGB(143,143,143)), ColorSequenceKeypoint.new(0.7, Color3.fromRGB(200,0,0)), ColorSequenceKeypoint.new(0.82, Color3.fromRGB(56,110,225)), ColorSequenceKeypoint.new(1, Color3.fromRGB(246,179,255))}),
 	grad2(colors.purewhite, Color3.fromRGB(16,16,16)),
 	ColorSequence.new({ColorSequenceKeypoint.new(0, colors.white), ColorSequenceKeypoint.new(0.66, colors.purewhite), ColorSequenceKeypoint.new(1, colors.white)})
@@ -71,6 +71,7 @@ function CreateUI.text(prnt, txt, size, pos, isbutton, style)
     newtxt.Text = txt
     newtxt.Size = size
     newtxt.Position = pos
+    if not style then style = self.textStyles end
     stylize(newtxt, style)
 end
 

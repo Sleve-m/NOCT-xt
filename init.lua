@@ -2,8 +2,16 @@ local HttpService = game:GetService("HttpService")
 local environment = getgenv()
 
 local url = "https://raw.githubusercontent.com/Sleve-m/NOCT-xt/refs/heads/main/"
+
+local LoadingUImod = loadstring(isfile("NOCT-xt/frames/Loading.lua") and readfile("NOCT-xt/frames/Loading.lua") or game:HttpGet("https://raw.githubusercontent.com/Sleve-m/NOCT-xt/main/frames/Loading.lua"))()
+
+local noctxt = Instance.new("ScreenGui", gethui())
+noctxt.Name = "NOCTxt"
+local LoadingUI = LoadingUImod.createLoadingUI()
+LoadingUI.Parent = noctxt
+
 if not isfile("NOCT-xt/config.lua") then
-    print("NOCT-xt: Performing First-Time Install...")
+    LoadingUI.TextLabel.Text = "Installing NOCT xt..."
     if not isfolder("NOCT-xt") then
         makefolder("NOCT-xt")
     end
@@ -17,10 +25,8 @@ if not isfile("NOCT-xt/config.lua") then
         writefile("NOCT-xt/config.lua", remoteConfigGet)
         local dependencies = loadstring(remoteConfigGet)().dependencies
         local remoteUpdater = loadstring(remoteUpdaterGet)()
-        remoteUpdater:Install(dependencies)
+        remoteUpdater:Install(dependencies, LoadingUI.TextLabel)
     else
-        print(success)
-        print(successs)
         return warn("NOCT-xt: Failed to fetch install list from GitHub.")
     end
 end
@@ -41,7 +47,7 @@ local Updater = fimport("updater.lua")
 local Config = fimport("config.lua")
 
 local noctCanStart = true
-
+LoadingUI.TextLabel.Text = "Checking dependencies..."
 local checkedDependencies = Config:checkDependencies()
 
 if #checkedDependencies > 0 then
@@ -57,7 +63,7 @@ if #checkedDependencies > 0 then
     warn(warningMessage)
     
 else
-    print("NOCT-xt: All dependencies loaded. Starting...")
+    LoadingUI.TextLabel.Text = ("Starting...")
 end
 
 if Config.Settings.autoupdate then 
@@ -67,9 +73,10 @@ if Config.Settings.autoupdate then
     end 
 end
 
-useMethods(import("NOCT-xt/methods/string.lua"))
-useMethods(import("NOCT-xt/methods/table.lua"))
-useMethods(import("NOCT-xt/methods/userdata.lua"))
-useMethods(import("NOCT-xt/methods/environment.lua"))
+useMethods(import("methods/string.lua"))
+useMethods(import("methods/table.lua"))
+useMethods(import("methods/userdata.lua"))
+useMethods(import("methods/environment.lua"))
 
 loadstring(readfile("NOCT-xt/main.lua"))()
+

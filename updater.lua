@@ -5,22 +5,21 @@ local config = loadstring(readfile("NOCT-xt/config.lua"))()
 
 local url = "https://raw.githubusercontent.com/Sleve-m/NOCT-xt/refs/heads/main/"
 
-function updater:Install(dependencies)
+function updater:Install(dependencies, LoadingUI)
     for _, dependency in pairs(dependencies) do
         local content = game:HttpGet(url .. dependency)
-            
+        LoadingUI.Text = ("Installing: " .. dependency)
         if dependency:find("/") then
             local folder = "NOCT-xt/" .. dependency:match("^(.*)/")
             if not isfolder(folder) then makefolder(folder) end
         end
             
         writefile("NOCT-xt/" .. dependency, content)
-        print("Installed: " .. dependency)
     end
-    print("NOCT-xt: Finished install")
+    Loading.Text = ("Finished install")
 end
 
-function updater:updateNOCTxt()
+function updater:updateNOCTxt(LoadingUI)
     local dependencies = config.dependencies 
 
     if not dependencies then 
@@ -28,7 +27,7 @@ function updater:updateNOCTxt()
         return 
     end
 
-    print("Starting Update...")
+    LoadingUI = ("Starting Update...")
 
     for index, fileRelPath in pairs(dependencies) do
         local cleanPath = fileRelPath:gsub("^/", "")
@@ -49,16 +48,16 @@ function updater:updateNOCTxt()
             end
 
             writefile(fullPath, content)
-            print("Updated: " .. cleanPath)
+            LoadingUI = ("Updated: " .. cleanPath)
         else
             warn("Failed to download: " .. cleanPath)
         end
     end
     
-    print("Update Complete! Please restart the script.")
+    LoadingUI = ("Update Complete! Please restart the script.")
 end
 
-function updater:checkForUpdates()
+function updater:checkForUpdates(LoadingUI)
     local thisVersion = config.Version
     
     local success, remoteConfig = pcall(function()
@@ -69,7 +68,7 @@ function updater:checkForUpdates()
         local currentVersion = remoteConfig.Version
         
         if thisVersion ~= currentVersion then
-            print("Update Available! Local: " .. thisVersion .. " | Remote: " .. currentVersion)
+            LoadingUI = ("Update Available! Local: " .. thisVersion .. " | Remote: " .. currentVersion)
             return true
         end
     else
