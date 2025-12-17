@@ -9,4 +9,4 @@ local MarketplaceService = game:GetService("MarketplaceService")
 
 print("Main opened")
 
-print(config.dependencies[1])
+print(Config.dependencies[1])
