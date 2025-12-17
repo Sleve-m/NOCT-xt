@@ -5,6 +5,21 @@ local config = loadstring(readfile("NOCT-xt/config.lua"))()
 
 local url = "https://raw.githubusercontent.com/Sleve-m/NOCT-xt/refs/heads/main/"
 
+function updater:Install(dependencies)
+    for _, dependency in pairs(dependencies) do
+        local content = game:HttpGet(url .. dependency)
+            
+        if dependency:find("/") then
+            local folder = "NOCT-xt/" .. dependency:match("^(.*)/")
+            if not isfolder(folder) then makefolder(folder) end
+        end
+            
+        writefile("NOCT-xt/" .. dependency, content)
+        print("Installed: " .. dependency)
+    end
+    print("NOCT-xt: Finished install")
+end
+
 function updater:updateNOCTxt()
     local dependencies = config.dependencies 
 
