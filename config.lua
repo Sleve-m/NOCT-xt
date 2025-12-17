@@ -58,7 +58,7 @@ config.dependencies = {
     "init.lua",
     "config.lua",
     "updater.lua",
-    "main.lua"
+    "main.lua",
     "methods/environment.lua",
     "methods/string.lua",
     "methods/table.lua",
