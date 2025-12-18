@@ -9,11 +9,11 @@ function updater:Install(dependencies, LoadingUI)
     for _, dependency in pairs(dependencies) do
         local content = game:HttpGet(url .. dependency)
         LoadingUI.Text = ("Installing: " .. dependency)
+        LoadingUI.Frame.Size = UDim2.new((_/#dependencies),0,0,2)
         if dependency:find("/") then
             local folder = "NOCT-xt/" .. dependency:match("^(.*)/")
             if not isfolder(folder) then makefolder(folder) end
         end
-            
         writefile("NOCT-xt/" .. dependency, content)
     end
     LoadingUI.Text = ("Finished install")

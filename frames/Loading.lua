@@ -24,6 +24,10 @@ function Loading.createLoadingUI()
     tinfo.Position = UDim2.new(0,0,1,-10)
     tinfo.BackgroundTransparency = 1
     tinfo.TextXAlignment = Enum.TextXAlignment.Left
+    local loadbar = Instance.new("Frame", loadingui)
+    loadbar.Size = UDim2.new(0,0,0,2)
+    loadbar.Position = UDim2.new(0,0,1,0)
+    loadbar.BackgroundColor3 = Color3.fromRGB(200,200,200)
     return loadingui
 end
 
