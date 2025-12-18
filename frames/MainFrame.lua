@@ -31,6 +31,7 @@ function MainFrame.createMainFrame(prnt)
     kill.MouseLeave:Connect(function()
 	    kill.UIGradient.Color = createUI.grad2(Color3.fromRGB(255,255,255), Color3.fromRGB(32,32,32))
     end)
+    minimize.Parent = prnt
     return minimize
 end
 
