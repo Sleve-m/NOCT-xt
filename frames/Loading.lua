@@ -18,7 +18,7 @@ function Loading.createLoadingUI()
     local tinfo = Instance.new("TextLabel", loadingui)
     tinfo.ZIndex = 11
     tinfo.Text = "Checking if installed"
-    tinfo.TextSize = 8
+    tinfo.TextSize = 6
     tinfo.TextColor3 = Color3.fromRGB(200,200,200)
     tinfo.Size = UDim2.new(1,0,0,10)
     tinfo.Position = UDim2.new(0,0,1,-10)

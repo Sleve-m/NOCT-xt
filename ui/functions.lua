@@ -80,7 +80,29 @@ function UIFunctions.adaptivescroll(frame)
 		end
 		frame.CanvasPosition = Vector2.new(newX, frame.CanvasPosition.Y)
 		frame.CanvasPosition = Vector2.new(frame.CanvasPosition.X, newY)
-		
+	end)
+end
+
+function UIFunctions.animateframeswapbutton()
+
+end
+
+function UIFunctions.swaptoframe()
+	local mousein = false
+	btn.MouseEnter:Connect(function()
+		mousein = true
+		while wait(0.02) and mousein do
+			btngrad.Rotation += 10
+			if btngrad.Rotation > 360 then btngrad.Rotation -= 360 end
+		end
+	end)
+	btn.MouseLeave:Connect(function()
+		mousein = false
+		while wait(0.02) and not mousein and not(btngrad.Rotation > 30 and btngrad.Rotation < 60) do
+			btngrad.Rotation += 20
+			if btngrad.Rotation > 360 then btngrad.Rotation -= 360 end
+		end
+		if not mousein then btngrad.Rotation = 45 end
 	end)
 end
 
