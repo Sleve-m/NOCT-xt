@@ -16,6 +16,7 @@ function updater:Install(dependencies, LoadingUI)
         end
         writefile("NOCT-xt/" .. dependency, content)
     end
+    LoadingUI.Parent.Frame:Destroy()
     LoadingUI.Text = ("Finished install")
 end
 

@@ -96,7 +96,6 @@ config.dependencies = {
     "ui/images/ScrollBar.png",
     "ui/images/Settings.png",
     "ui/create.lua",
-    "ui/functions.lua",
     "ui/sizing.lua",
     "ui/uibuilder.lua"
 }

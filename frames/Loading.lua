@@ -28,6 +28,7 @@ function Loading.createLoadingUI()
     loadbar.Size = UDim2.new(0,0,0,2)
     loadbar.Position = UDim2.new(0,0,1,0)
     loadbar.BackgroundColor3 = Color3.fromRGB(200,200,200)
+    loadbar.BorderSizePixel = 0
     return loadingui
 end
 
