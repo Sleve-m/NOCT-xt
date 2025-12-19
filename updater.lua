@@ -51,13 +51,12 @@ function updater:updateNOCTxt(LoadingUI)
             end
 
             writefile(fullPath, content)
-            LoadingUI = ("Updated: " .. cleanPath)
         else
             warn("Failed to download: " .. cleanPath)
         end
     end
     
-    LoadingUI = ("Update Complete! Please restart the script.")
+    LoadingUI.Text = ("Update Complete! Please restart the script.")
 end
 
 function updater:checkForUpdates(LoadingUI)
