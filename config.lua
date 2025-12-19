@@ -92,6 +92,7 @@ config.dependencies = {
     "objects/Upvalue.lua",
     "ui/images/Home.png",
     "ui/images/Instance Explorer.png",
+    "ui/images/PlaceHolder.png",
     "ui/images/Remote Spy.png",
     "ui/images/Scroll Bar.png",
     "ui/images/Settings.png",
