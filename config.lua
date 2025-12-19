@@ -2,7 +2,7 @@ local HttpService = game:GetService("HttpService")
 
 local config = {}
 
-config.Version = "v1.0.0.0a" -- Do not touch, this is used by updater.lua to autoupdate the script
+config.Version = "v1.0.0.0b" -- Do not touch, this is used by updater.lua to autoupdate the script
 
 config.Default = {
     autoupdate = true,
@@ -91,9 +91,9 @@ config.dependencies = {
     "objects/Remote.lua",
     "objects/Upvalue.lua",
     "ui/images/Home.png",
-    "ui/images/InstanceExplorer.png",
-    "ui/images/RemoteSpy.png",
-    "ui/images/ScrollBar.png",
+    "ui/images/Instance Explorer.png",
+    "ui/images/Remote Spy.png",
+    "ui/images/Scroll Bar.png",
     "ui/images/Settings.png",
     "ui/create.lua",
     "ui/sizing.lua",

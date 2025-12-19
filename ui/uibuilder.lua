@@ -1,6 +1,6 @@
 local UIBuilder = {}
 
-local mainFrameBuilder = import("ui/MainFrame.lua")
+local mainFrameBuilder = import("frames/MainFrame.lua")
 
 function UIBuilder.buildUI()
     local mainframe = mainFrameBuilder.createMainFrame()

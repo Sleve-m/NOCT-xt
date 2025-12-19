@@ -1,11 +1,11 @@
 local MainFrame = {}
 
 local createUI = import("ui/create.lua")
-local UIsizing = import("ui/sizing.lua")
-local udpix, sudpix, sUDim2 = UISizing.udpix, UISizing.sudpix, UISizing.sUDim2
+
+local udpix, sudpix, sUDim2 = createUI.udpix, createUI.sudpix, createUI.sUDim2
 
 function MainFrame.createMainFrame()
-    local minimize = createUI.createText(nil, "Noct xt", sudpix(50,15), UDim2.new(0.5,-140,0.5,-80), true)
+    local minimize = createUI.createText(nil, "NOCT xt", sudpix(50,15), sUDim2(0.5,-140,0.5,-80), true)
     createUI.createGrad(minimize, createUI.colorgrads[1], 0)
     minimize.ZIndex = 5
     minimize.FontFace.Weight = Enum.FontWeight.Bold
@@ -15,15 +15,17 @@ function MainFrame.createMainFrame()
     border.BackgroundTransparency = 0.5
     minimize.MouseButton1Click:Connect(function()
         border.Visible = not border.Visible
+        minimize.BackgroundTransparency = (minimize.BackgroundTransparency == 0 and 1 or 0)
     end)
-    local main = createUI.createFrame(border, sudpix(280,160), sudpix(1,1), false)
+    local main = createUI.createFrame(border, sudpix(282,162)-udpix(2,2), udpix(1,1), false)
     createUI.makeDraggable(main, minimize)
-    local titletext = createUI.createText(main, "Home", sudpix(50,15), UDim2.new(0.5,-25,0,0), false)
-    createGrad(titletext, createUI.colorgrads[3], 0)
-    local topline = createUI.createFrame(main, sudpix(280,1), sudpix(0,15), false)
+    local titletext = createUI.createText(main, "Home", sudpix(50,15), sUDim2(0.5,-25,0,0), false)
+    titletext.TextSize = createUI.sNumber(8)
+    createUI.createGrad(titletext, createUI.colorgrads[3], 0)
+    local topline = createUI.createFrame(main, UDim2.new(1,0,0,1), sudpix(0,15), false)
     topline.BackgroundColor3 = Color3.fromRGB(100,100,100)
     createUI.createGrad(topline, createUI.colorgrads[3], 0)
-    local kill = createUI.createText(main, "X", sudpix(15,15), sUDim2.new(1,-15,0,0), true)
+    local kill = createUI.createText(main, "X", sudpix(15,15), sUDim2(1,-15,0,0), true)
     createUI.createGrad(kill, createUI.colorgrads[2], 45)
     kill.MouseEnter:Connect(function()
 	    kill.UIGradient.Color = createUI.grad2(Color3.fromRGB(255,32,32),Color3.fromRGB(32,32,32))
@@ -62,8 +64,14 @@ function MainFrame.createMainFrame()
     }
     local frameswapbuttonfolder = Instance.new("Folder", main)
     for _, frameswapbutton in pairs(frameswapbuttons) do
-        local img = getcustomasset("NOCT-xt/ui/images/"..frameswapbutton..".png")
-        createUI.createFrameSwapButton(frameswapbuttonfolder, _, img, subframefolder[frameswapbutton])
+        local success, img = pcall(function()
+            return getcustomasset("NOCT-xt/ui/images/"..frameswapbutton..".png")
+        end)
+        if success then
+            createUI.createFrameSwapButton(frameswapbuttonfolder, _, img, subframefolder[frameswapbutton], subframefolder)
+        else
+            createUI.createFrameSwapButton(frameswapbuttonfolder, _, getcustomasset("NOCT-xt/ui/images/PlaceHolder.png"), subframefolder[frameswapbutton], subframefolder)
+        end
     end
     return minimize
 end

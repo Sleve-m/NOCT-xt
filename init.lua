@@ -43,8 +43,8 @@ end
 
 useMethods({ import = fimport })
 
-local Updater = fimport("updater.lua")
-local Config = fimport("config.lua")
+local Updater = import("updater.lua")
+local Config = import("config.lua")
 
 local noctCanStart = true
 LoadingUI.TextLabel.Text = "Checking dependencies..."
@@ -69,7 +69,7 @@ end
 if Config.Settings.autoupdate then 
     if Updater:checkForUpdates() then 
         Updater:updateNOCTxt()
-        Config = fimport("config.lua")
+        Config = import("config.lua")
     end 
 end
 
