@@ -258,11 +258,16 @@ end
 
 function CreateUI.createFrameSwapButton(prnt, y, img, frame)
     local newbtn = self.createImage(prnt, img, sudpix(15,15), sudpix(0,(y*15)+16), true)
+	newbtn.ImageColor3 = (frame == "Home" and newbtn.ImageColor3 == Color3.fromRGB(200,200,200) or newbtn.ImageColor3 == Color3.fromRGB(128,128,128))
     if Config.Settings.ui.animate then
         self.animateframeswapbutton(newbtn)
     end
     newbtn.MouseButton1Click:Connect(function()
         self.swaptoframe(frame)
+		for _, btn in pairs(prnt:GetChildren()) do
+			btn.ImageColor3 = Color3.fromRGB(128,128,128)
+		end
+		newbtn.ImageColor3 = Color3.fromRGB(200,200,200)
     end)
 end
 

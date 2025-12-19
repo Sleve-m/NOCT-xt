@@ -4,8 +4,8 @@ local createUI = import("ui/create.lua")
 local UIsizing = import("ui/sizing.lua")
 local udpix, sudpix, sUDim2 = UISizing.udpix, UISizing.sudpix, UISizing.sUDim2
 
-function MainFrame.createMainFrame(prnt)
-    local minimize = createUI.createText(prnt, "Noct xt", sudpix(50,15), UDim2.new(0.5,-140,0.5,-80), true)
+function MainFrame.createMainFrame()
+    local minimize = createUI.createText(nil, "Noct xt", sudpix(50,15), UDim2.new(0.5,-140,0.5,-80), true)
     createUI.createGrad(minimize, createUI.colorgrads[1], 0)
     minimize.ZIndex = 5
     minimize.FontFace.Weight = Enum.FontWeight.Bold
@@ -31,7 +31,40 @@ function MainFrame.createMainFrame(prnt)
     kill.MouseLeave:Connect(function()
 	    kill.UIGradient.Color = createUI.grad2(Color3.fromRGB(255,255,255), Color3.fromRGB(32,32,32))
     end)
-    minimize.Parent = prnt
+    local function createSubFrame(name, folder)
+        local subframe = createUI.createFrame(folder, sudpix(265,144), sudpix(15,16), false)
+        subframe.Name = name
+    end
+    local subframes = {
+        "Closure Scanner",
+        "Home",
+        "Instance Explorer",
+        "Log Viewer",
+        "Remote Spy",
+        "Script Searcher",
+        "Script Viewer",
+        "Settings",
+        "Upvalue Scanner",
+        "Value Editor"
+    }
+    local subframefolder = Instance.new("Folder", main)
+    for _, subframe in pairs(subframes) do
+        createSubFrame(subframe, subframefolder)
+    end
+    local frameswapbuttons = {
+        "Instance Explorer",
+        "Remote Spy",
+        "Script Searcher",
+        "Upvalue Scanner",
+        "Closure Scanner",
+        "Settings",
+        "Home"
+    }
+    local frameswapbuttonfolder = Instance.new("Folder", main)
+    for _, frameswapbutton in pairs(frameswapbuttons) do
+        local img = getcustomasset("NOCT-xt/ui/images/"..frameswapbutton..".png")
+        createUI.createFrameSwapButton(frameswapbuttonfolder, _, img, subframefolder[frameswapbutton])
+    end
     return minimize
 end
 
