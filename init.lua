@@ -68,7 +68,7 @@ end
 
 if Config.Settings.autoupdate then 
     if Updater:checkForUpdates() then 
-        Updater:updateNOCTxt()
+        Updater:updateNOCTxt(LoadingUI.TextLabel)
         Config = import("config.lua")
     end 
 end

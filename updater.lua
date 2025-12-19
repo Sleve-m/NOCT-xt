@@ -28,11 +28,11 @@ function updater:updateNOCTxt(LoadingUI)
         return 
     end
 
-    LoadingUI = ("Starting Update...")
+    LoadingUI.Text = ("Starting Update...")
 
     for index, fileRelPath in pairs(dependencies) do
-        LoadingUI.Text = ("Updating: " .. dependency)
-        LoadingUI.Parent.Frame.Size = UDim2.new((_/#dependencies),0,0,2)
+        LoadingUI.Text = ("Updating: " .. fileRelPath)
+        LoadingUI.Parent.Frame.Size = UDim2.new((index/#dependencies),0,0,2)
         local cleanPath = fileRelPath:gsub("^/", "")
         local fileUrl = url .. cleanPath
         
