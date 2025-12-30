@@ -2,7 +2,7 @@ local HttpService = game:GetService("HttpService")
 
 local config = {}
 
-config.Version = "v1.0.0.0a1" -- Do not touch, this is used by updater.lua to autoupdate the script
+config.Version = "v1.0.0.0a2" -- Do not touch, this is used by updater.lua to autoupdate the script
 
 config.Default = {
     controls = {

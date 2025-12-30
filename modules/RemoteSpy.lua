@@ -303,53 +303,39 @@ hookfunction(rawequal, newcclosure(function(...)
     return oldRawEqual(...)
 end))
 
-hookfunction(debug.info, newcclosure(function(arg1, ...)
+hookfunction(debug.info, newcclosure(function(arg1, arg2, ...)
     if not checkcaller() then
-        local logKey = ""
-        
         if type(arg1) == "number" then
-            local success, name, src = pcall(oldDebugInfo, arg1, "ns")
+            local _, name, src = pcall(oldDebugInfo, arg1, "ns")
+            name = name or "anonymous"
+            src = src or "unknown"
             
-            if success then
-                name = name or "anonymous"
-                src = src or "unknown source"
-                logKey = "Stack Level " .. tostring(arg1) .. " -> " .. name .. " (" .. src .. ")"
-            else
-                logKey = "Stack Level " .. tostring(arg1) .. " (Could not resolve)"
-            end
+            local logKey = `Stack(Num) {arg1} -> {name} ({src})`
             if not loggedChecks[logKey] then
                 loggedChecks[logKey] = true
-                alertprint = "AC Check: "..logKey.."\t : "..tostring(getcallingscript())
+                print("AC Check:", logKey) 
             end
-            return oldDebugInfo(arg1+1, ...)
+
+            return oldDebugInfo(arg1 + 1, arg2, ...)
+
+        elseif type(arg1) == "thread" and type(arg2) == "number" then
+            local _, name, src = pcall(oldDebugInfo, arg1, arg2, "ns")
+            name = name or "anonymous"
+            src = src or "unknown"
+            
+            local logKey = `Stack(Thr) {arg2} -> {name} ({src})`
+            if not loggedChecks[logKey] then
+                loggedChecks[logKey] = true
+                print("AC Check:", logKey)
+            end
+
+            return oldDebugInfo(arg1, arg2 + 1, ...)
 
         elseif type(arg1) == "function" then
-            if arg1 == mt.__namecall then
-                logKey = "Function: __namecall"
-            elseif arg1 == mt.__index then
-                logKey = "Function: __index"
-            elseif arg1 == print then
-                logKey = "Function: print (Integrity Check)"
-            else
-                local success, src = pcall(oldDebugInfo, arg1, "s")
-                local _, name = pcall(oldDebugInfo, arg1, "n")
-                
-                src = success and src or "unknown"
-                name = name or "anonymous"
-                
-                logKey = "Function: " .. name .. " inside " .. src
-            end
-        else
-            logKey = "Type: " .. typeof(arg1)
-        end
-
-        if not loggedChecks[logKey] then
-            loggedChecks[logKey] = true
-            alertprint = "AC Check: "..logKey.."\t : "..tostring(getcallingscript())
         end
     end
 
-    return oldDebugInfo(arg1, ...)
+    return oldDebugInfo(arg1, arg2, ...)
 end))
 
 hookfunction(islclosure, newcclosure(function(func)

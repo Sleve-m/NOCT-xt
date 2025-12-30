@@ -7,7 +7,7 @@ local MarketplaceService = game:GetService("MarketplaceService")
 local LoadingUI = noctxt.TextLabel
 
 LoadingUI.TextLabel.Text = "Loading Modules..."
-import("modules/ModuleLoader.lua").loadModules()
+io.requirefile("NOCT-xt/modules/ModuleLoader.lua").loadModules()
 
 LoadingUI.TextLabel.Text = "Drawing UI..."
 local mainframe = nil

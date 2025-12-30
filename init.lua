@@ -1,12 +1,10 @@
 local HttpService = game:GetService("HttpService")
-local environment = gettenv()
+local environment = gettenv(coroutine.create(function() end))
 
-local LoadingUImod = loadstring(io.requirefileorget("NOCT-xt/frames/Loading.lua", "https://raw.githubusercontent.com/Sleve-m/NOCT-xt/main/frames/Loading.lua"))()
+local LoadingUImod = io.requirefileorget("NOCT-xt/frames/Loading.lua", "https://raw.githubusercontent.com/Sleve-m/NOCT-xt/main/frames/Loading.lua")
 
 local noctxt = Instance.new("ScreenGui", gethui())
-print("01")
 noctxt.Name = "NOCTxt"
-print("02")
 local LoadingUI = LoadingUImod.createLoadingUI()
 LoadingUI.Parent = noctxt
 
@@ -27,7 +25,7 @@ environment.NOCT = {
     modules = {},
     UIS = {},
     CTRLS = {},
-    subframefolder = {}
+    subframefolder = {},
     settings = {}
 }
 
@@ -41,8 +39,8 @@ useMethods({
     import = io.requirefile("NOCT-xt/methods/fileimport.lua").importfile
 })
 
-local Updater = import("updater.lua")
-modules.config = import("config.lua")
+local Updater = io.requirefile("NOCT-xt/updater.lua")
+modules.config = io.requirefile("NOCT-xt/config.lua")
 
 local noctCanStart = true
 LoadingUI.TextLabel.Text = "Checking dependencies..."
@@ -63,14 +61,14 @@ else
 end
 
 Updater:updateNOCTxt(LoadingUI.TextLabel)
-modules.config = import("config.lua")
+modules.config = io.requirefile("NOCT-xt/config.lua")
 modules.config:LoadSettings()
 
-useMethods(import("methods/string.lua"))
-useMethods(import("methods/table.lua"))
-useMethods(import("methods/userdata.lua"))
-useMethods(import("methods/environment.lua"))
-useMethods(import("methods/getimage.lua"))
+useMethods(io.requirefile("NOCT-xt/methods/string.lua"))
+useMethods(io.requirefile("NOCT-xt/methods/table.lua"))
+useMethods(io.requirefile("NOCT-xt/methods/userdata.lua"))
+useMethods(io.requirefile("NOCT-xt/methods/environment.lua"))
+useMethods(io.requirefile("NOCT-xt/methods/getimage.lua"))
 
 loadstring(readfile("NOCT-xt/main.lua"))()
 
