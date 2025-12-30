@@ -1,5 +1,5 @@
 local ScriptScanner = {}
-local LocalScript = import("objects/LocalScript")
+local LocalScript = modules.localScriptObject
 
 local requiredMethods = {
     ["getGc"] = true,

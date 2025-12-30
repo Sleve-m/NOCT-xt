@@ -70,7 +70,7 @@ function updater:checkForUpdates(LoadingUI)
         local currentVersion = remoteConfig.Version
         
         if thisVersion ~= currentVersion then
-            LoadingUI = ("Update Available! Local: " .. thisVersion .. " | Remote: " .. currentVersion)
+            LoadingUI.Text = ("Update "..currentVersion.. "available")
             return true
         end
     else

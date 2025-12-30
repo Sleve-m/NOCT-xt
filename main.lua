@@ -4,21 +4,23 @@ local coregui = game:GetService("CoreGui")
 local TextService = game:GetService("TextService")
 local MarketplaceService = game:GetService("MarketplaceService")
 
-local Config = import("Config.lua")
-local UIBuilder = import("ui/uibuilder.lua")
-
-local noctxt = gethui().NOCTxt
 local LoadingUI = noctxt.TextLabel
 
+LoadingUI.TextLabel.Text = "Loading Modules..."
+import("modules/ModuleLoader.lua").loadModules()
+
 LoadingUI.TextLabel.Text = "Drawing UI..."
-local MainFrame = UIBuilder.buildUI()
+local mainframe = nil
+mainframe = modules.UIBuilder.buildUI()
 
 LoadingUI.TextLabel:Destroy()
-while wait(0.015) and LoadingUI.UIGradient.Rotation < 0 do
-	LoadingUI.UIGradient.Rotation += 1
+for i = -90, 0 do
+	task.wait()
+	LoadingUI.UIGradient.Rotation = math.lerp(-90, 0, math.smoothstep(math.clamp((i+90)/(90), 0, 1)))
 end
-
-MainFrame.Parent = noctxt
+modules.iEModule.setup()
+modules.sVModule.setup()
+mainframe.Parent.Parent.Parent = noctxt
 
 LoadingUI.BackgroundTransparency = 1
 while wait(0.02) and LoadingUI.TextTransparency < 1 do

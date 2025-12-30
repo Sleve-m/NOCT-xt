@@ -1,4 +1,4 @@
 # NOCT-xt
 In development
 
-Run init.lua
+loadstring(isfile("NOCT-xt/init.lua") and readfile("NOCT-xt/init.lua") or game:HttpGet("https://raw.githubusercontent.com/Sleve-m/NOCT-xt/main/init.lua"))()

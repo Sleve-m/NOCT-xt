@@ -1,37 +1,19 @@
 local HttpService = game:GetService("HttpService")
-local environment = getgenv()
+local environment = gettenv()
 
-local url = "https://raw.githubusercontent.com/Sleve-m/NOCT-xt/refs/heads/main/"
-
-local LoadingUImod = loadstring(isfile("NOCT-xt/frames/Loading.lua") and readfile("NOCT-xt/frames/Loading.lua") or game:HttpGet("https://raw.githubusercontent.com/Sleve-m/NOCT-xt/main/frames/Loading.lua"))()
+local LoadingUImod = loadstring(io.requirefileorget("NOCT-xt/frames/Loading.lua", "https://raw.githubusercontent.com/Sleve-m/NOCT-xt/main/frames/Loading.lua"))()
 
 local noctxt = Instance.new("ScreenGui", gethui())
+print("01")
 noctxt.Name = "NOCTxt"
+print("02")
 local LoadingUI = LoadingUImod.createLoadingUI()
 LoadingUI.Parent = noctxt
 
-if not isfile("NOCT-xt/config.lua") then
+if not isfolder("NOCT-xt") then
     LoadingUI.TextLabel.Text = "Installing NOCT xt..."
-    if not isfolder("NOCT-xt") then
-        makefolder("NOCT-xt")
-    end
-    local success, remoteConfigGet = pcall(function()
-        return game:HttpGet(url .. "config.lua")
-    end)
-    local successs, remoteUpdaterGet = pcall(function()
-        return game:HttpGet(url .. "updater.lua")
-    end)
-    if success and successs then
-        writefile("NOCT-xt/config.lua", remoteConfigGet)
-        local dependencies = loadstring(remoteConfigGet)().dependencies
-        local remoteUpdater = loadstring(remoteUpdaterGet)()
-        remoteUpdater:Install(dependencies, LoadingUI.TextLabel)
-    else
-        return warn("NOCT-xt: Failed to fetch install list from GitHub.")
-    end
+    morehttp.downloadrepo("Sleve-m", "NOCT-xt", "main", "NOCT-xt")
 end
-
-local fimport = loadstring(readfile("NOCT-xt/methods/fileimport.lua"))().importfile
 
 local function useMethods(module)
     for name, method in pairs(module) do
@@ -41,42 +23,54 @@ local function useMethods(module)
     end
 end
 
-useMethods({ import = fimport })
+environment.NOCT = {
+    modules = {},
+    UIS = {},
+    CTRLS = {},
+    subframefolder = {}
+    settings = {}
+}
+
+useMethods({
+    environment = environment,
+    modules = NOCT.modules,
+    uis = NOCT.UIS,
+    controls = NOCT.CTRLS,
+    subframes = NOCT.subframefolder,
+    noctxt = noctxt,
+    import = io.requirefile("NOCT-xt/methods/fileimport.lua").importfile
+})
 
 local Updater = import("updater.lua")
-local Config = import("config.lua")
+modules.config = import("config.lua")
 
 local noctCanStart = true
 LoadingUI.TextLabel.Text = "Checking dependencies..."
-local checkedDependencies = Config:checkDependencies()
+local missingDependencies = modules.config:checkDependencies()
 
-if #checkedDependencies > 0 then
+if #missingDependencies > 0 then
     local warningMessage = "NOCT-xt is missing dependencies: "
-    
-    for index, missingDependency in pairs(checkedDependencies) do
+    local function appendWarning(_, missingDependency)
         warningMessage = warningMessage .. missingDependency
-        
-        if index ~= #checkedDependencies then 
+        if _ ~= #missingDependencies then 
             warningMessage = warningMessage .. ", " 
         end
     end
+    table.fordo(missingDependencies, appendWarning)
     warn(warningMessage)
-    
 else
     LoadingUI.TextLabel.Text = ("Starting...")
 end
 
-if Config.Settings.autoupdate then 
-    if Updater:checkForUpdates() then 
-        Updater:updateNOCTxt(LoadingUI.TextLabel)
-        Config = import("config.lua")
-    end 
-end
+Updater:updateNOCTxt(LoadingUI.TextLabel)
+modules.config = import("config.lua")
+modules.config:LoadSettings()
 
 useMethods(import("methods/string.lua"))
 useMethods(import("methods/table.lua"))
 useMethods(import("methods/userdata.lua"))
 useMethods(import("methods/environment.lua"))
+useMethods(import("methods/getimage.lua"))
 
 loadstring(readfile("NOCT-xt/main.lua"))()
 

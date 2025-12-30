@@ -2,13 +2,15 @@ local CreateUI = {}
 
 local UserInputService = game:GetService("UserInputService")
 local ContextActionService = game:GetService("ContextActionService")
-local sinkaction = "NOCT_SinkScroll"
-local sideScrollDown = false
-local groupSelectDown = false
-local addSelectDown = false
+local RunService = game:GetService("RunService")
+local SINK_ACTION = "NOCT_SinkScroll"
+controls.sideScrollDown = false
+controls.groupSelectDown = false
+controls.addSelectDown = false
+controls.fastScrollDown = false
 
-local Config = import("config.lua")
-local controls = Config.Default.controls
+local Config = modules.config
+local setcontrols = Config.Default.controls
 local uisettings = Config.Default.ui
 
 function CreateUI.sudpix(x, y)
@@ -35,6 +37,10 @@ end
 
 local udpix, sudpix, sUDim2 = CreateUI.udpix, CreateUI.sudpix, CreateUI.sUDim2
 
+local asIcon = nil
+local as = false
+local asFrame = nil
+
 function CreateUI.adaptivescroll(frame)
 	frame.ScrollingEnabled = false
 	local friction = 0.93
@@ -42,6 +48,7 @@ function CreateUI.adaptivescroll(frame)
 	local velocityx = 0
 	
 	frame.MouseEnter:Connect(function()
+		wait()
 		ContextActionService:BindAction(
 			SINK_ACTION, 
 			function() 
@@ -59,14 +66,29 @@ function CreateUI.adaptivescroll(frame)
 	frame.InputChanged:Connect(function(input)
 		if input.UserInputType == Enum.UserInputType.MouseWheel then
 			if sideScrollDown then
-				velocityx = velocityx + (input.Position.Z * -3)
+				velocityx = velocityx + (input.Position.Z * -(controls.fastScrollDown and 8 or 3))
 			else
-				velocity = velocity + (input.Position.Z * 3)
+				velocity = velocity + (input.Position.Z * (controls.fastScrollDown and 8 or 3))
 			end
 		end
 	end)
 
+	frame.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton3 then
+			as = not as
+			asFrame = as and frame or nil
+			asIcon.Position = UDim2.fromOffset(input.Position.X-(asIcon.Size.X.Offset/2), input.Position.Y-(asIcon.Size.Y.Offset/2))
+			asIcon.Visible = as
+		end
+	end)
+
 	RunService.RenderStepped:Connect(function()
+		if as and asFrame == frame then
+			local asX = -(UserInputService:GetMouseLocation().X-(asIcon.Position.X.Offset+(asIcon.Size.X.Offset/2)))/10
+			local asY = -(UserInputService:GetMouseLocation().Y-55-(asIcon.Position.Y.Offset+(asIcon.Size.Y.Offset/2)))/10
+			velocity = math.abs(asY) > .5 and asY or 0
+			velocityx = math.abs(asX) > .5 and asX or 0
+		end
 		if math.abs(velocity) < 0.1 and math.abs(velocityx) < 0.1 then
 			velocity = 0
 			velocityx = 0
@@ -159,9 +181,10 @@ function CreateUI.makeDraggable(a, b)
         if input.UserInputType == Enum.UserInputType.MouseButton2 then
             CreateUI.deleteSelectionOptionFrame()
         end
-        if input.KeyCode == controls.sidescroll then sideScrollDown = true end
-        if input.KeyCode == controls.addselect then addSelectDown = true end
-        if input.KeyCode == controls.groupselect then groupSelectDown = true end
+        if input.KeyCode == setcontrols.sidescroll then controls.sideScrollDown = true end
+        if input.KeyCode == setcontrols.addselect then controls.addSelectDown = true end
+        if input.KeyCode == setcontrols.groupselect then controls.groupSelectDown = true end
+		if input.KeyCode == setcontrols.fastscroll then controls.fastScrollDown = true end
 	end)
     UserInputService.InputChanged:Connect(function(input)
         if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
@@ -172,17 +195,17 @@ function CreateUI.makeDraggable(a, b)
         if input.UserInputType == Enum.UserInputType.MouseButton1 then
             dragging = false
         end
-        if input.KeyCode == controls.sidescroll then sideScrollDown = false end
-        if input.KeyCode == controls.addselect then addSelectDown = false end
-        if input.KeyCode == controls.groupselect then groupSelectDown = false end
+        if input.KeyCode == setcontrols.sidescroll then controls.sideScrollDown = false end
+        if input.KeyCode == setcontrols.addselect then controls.addSelectDown = false end
+        if input.KeyCode == setcontrols.groupselect then controls.groupSelectDown = false end
+		if input.KeyCode == setcontrols.fastscroll then controls.fastScrollDown = false end
 	end)
 end
 
-function CreateUI.swaptoframe(frame, frames)
-	for _, currFrame in pairs(frames:GetChildren()) do
-		currFrame.Visible = false
+function CreateUI.swaptoframe(frame)
+	for _, currFrame in pairs(subframes:GetChildren()) do
+		currFrame.Visible = currFrame == frame and true or false
 	end
-	frame.Visible = true
 end
 
 local currentSelectionOptionsFrame = nil
@@ -214,11 +237,13 @@ CreateUI.textStyles = {
     },
     searchbar = {
         BackgroundColor3 = colors.darkgrey,
-        BackgroundTransparency = 1,
+        BackgroundTransparency = 0,
         BorderSizePixel = 0,
         Font = Enum.Font.Ubuntu,
-        TextSize = 10,
-        TextColor3 = colors.white
+        TextSize = 8,
+        TextColor3 = colors.white,
+		TextXAlignment = Enum.TextXAlignment.Left,
+		BorderColor3 = Color3.fromRGB(0,64,128)
     }
 }
 
@@ -250,8 +275,7 @@ function stylize(ui, style)
 end
 
 function CreateUI.createText(prnt, txt, size, pos, isbutton, style)
-    local typ = isbutton and "Button" or "Label"
-    local newtxt = Instance.new("Text"..typ, prnt)
+    local newtxt = Instance.new("Text"..(isbutton and "Button" or "Label"), prnt)
     newtxt.Text = txt
     newtxt.Size = size
     newtxt.Position = pos
@@ -260,17 +284,32 @@ function CreateUI.createText(prnt, txt, size, pos, isbutton, style)
     return newtxt
 end
 
+function CreateUI.createTextBox(prnt, txt, size, pos)
+	local newtxt = Instance.new("TextBox", prnt)
+	newtxt.Text = ""
+	newtxt.PlaceholderText = txt
+	newtxt.Size = size
+	newtxt.Position = pos
+	newtxt.ClearTextOnFocus = false
+	newtxt.BorderMode = Enum.BorderMode.Inset
+	newtxt.Focused:Connect(function() newtxt.BorderSizePixel = 1 end)
+	newtxt.FocusLost:Connect(function() newtxt.BorderSizePixel = 0 end)
+	stylize(newtxt, CreateUI.textStyles.searchbar)
+	return newtxt
+end
+
 function CreateUI.createImage(prnt, img, size, pos, isbutton)
     local newimg = Instance.new("Image"..(isbutton and "Button" or "Label"), prnt)
     newimg.Size = size
     newimg.Position = pos
     newimg.Image = img
 	newimg.BackgroundTransparency = 1
-	newimg.ScaleType = Enum.ScaleType.Slice
+	newimg.BorderSizePixel = 0
     return newimg
 end
 
-local scrollBarImage = getcustomasset("NOCT-xt/ui/images/Scroll Bar.png")
+asIcon = CreateUI.createImage(noctxt, getimg("Auto-Scroll.png"), sudpix(15,15), udpix(0,0), false)
+asIcon.Visible = false; asIcon.ZIndex = 10
 
 function CreateUI.createFrame(prnt, size, pos, isscrolling)
     local newframe = Instance.new((isscrolling and "Scrolling" or "").."Frame", prnt)
@@ -279,35 +318,48 @@ function CreateUI.createFrame(prnt, size, pos, isscrolling)
     newframe.BorderSizePixel = 0
     newframe.BackgroundColor3 = colors.black
     if isscrolling then
-        newframe.MidImage, newframe.TopImage, newframe.BottomImage = scrollBarImage
+		local setimg = getimg("PlaceHolder.png")
+        newframe.MidImage, newframe.TopImage, newframe.BottomImage = setimg, setimg, setimg
         newframe.ScrollBarThickness = 2
         CreateUI.adaptivescroll(newframe)
     end
     return newframe
 end
 
-function CreateUI.createFrameSwapButton(prnt, y, img, frame, frames)
-    local newbtn = CreateUI.createImage(prnt, img, sudpix(13,13), sudpix(2,((y-1)*15)+18), true)
-	newbtn.ImageColor3 = frame.Name == "Home" and colors.purewhite or Color3.fromRGB(150,150,150)
+function CreateUI.createFrameSwapButton(prnt, y, img, frame)
+    local newbtn = CreateUI.createImage(prnt, img, sudpix(15,15), sudpix(0,((y-1)*15)+16), true)
+	newbtn.ImageColor3 = frame.Name == "Home" and colors.purewhite or Color3.fromRGB(200,200,200)
+	newbtn.BackgroundColor3 = colors.darkgrey
+	newbtn.BackgroundTransparency = frame.Name == "Home" and 0 or 1
 	CreateUI.createGrad(newbtn, CreateUI.colorgrads[2], 45)
     if Config.Settings.ui.animate then
         CreateUI.animateframeswapbutton(newbtn)
     end
     newbtn.MouseButton1Click:Connect(function()
-        CreateUI.swaptoframe(frame, frames)
+        CreateUI.swaptoframe(frame)
 		for _, btn in pairs(prnt:GetChildren()) do
-			btn.ImageColor3 = Color3.fromRGB(150,150,150)
+			btn.ImageColor3 = btn == newbtn and Color3.fromRGB(200,200,200) or colors.purewhite
+			btn.BackgroundTransparency = btn == newbtn and 0 or 1
 		end
-		newbtn.ImageColor3 = colors.purewhite
     end)
+end
+
+function CreateUI.createSelectionOptionFrame(pos)
+	CreateUI.deleteSelectionOptionFrame()
+	local newseloptsframe = CreateUI.createFrame(noctxt, sudpix(55,0), pos, false)
+	currentSelectionOptionsFrame = newseloptsframe
+	newseloptsframe.BorderSizePixel = 1
+	return newseloptsframe
 end
 
 function CreateUI.deleteSelectionOptionFrame()
     if currentSelectionOptionsFrame then currentSelectionOptionsFrame:Destroy() end
 end
 
-function CreateUI.createSelectionOption(y, txt, func)
-    local newSelOpt = CreateUI.createText(currentSelectionOptionsFrame, txt, sudpix(55,15), sudpix(0,y*15), true)
+function CreateUI.createSelectionOption(txt, func)
+    local newSelOpt = CreateUI.createText(currentSelectionOptionsFrame, txt, sudpix(55,12), sudpix(0,(#currentSelectionOptionsFrame:GetChildren())*12), true)
+	currentSelectionOptionsFrame.Size = sudpix(55,(#currentSelectionOptionsFrame:GetChildren())*12)
+	newSelOpt.TextSize = CreateUI.sNumber(8)
     newSelOpt.MouseButton1Click:Connect(function()
         func()
         CreateUI.deleteSelectionOptionFrame()

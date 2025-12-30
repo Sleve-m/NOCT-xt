@@ -1,6 +1,6 @@
 local ConstantScanner = {}
-local Closure = import("objects/Closure")
-local Constant = import("objects/Constant")
+local Closure = modules.closureObject
+local Constant = modules.constantObject
 
 local requiredMethods = {
     ["getGc"] = true,

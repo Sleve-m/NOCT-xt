@@ -2,56 +2,31 @@ local HttpService = game:GetService("HttpService")
 
 local config = {}
 
-config.Version = "v1.0.0.0b" -- Do not touch, this is used by updater.lua to autoupdate the script
+config.Version = "v1.0.0.0a1" -- Do not touch, this is used by updater.lua to autoupdate the script
 
 config.Default = {
-    autoupdate = true,
     controls = {
         sidescroll = Enum.KeyCode.LeftControl,
         groupselect = Enum.KeyCode.LeftShift,
-        addselect = Enum.KeyCode.LeftControl
+        addselect = Enum.KeyCode.LeftControl,
+        fastscroll = Enum.KeyCode.LeftShift
     },
     ui = {
-        sizeratio = 1.3,
+        sizeratio = 1.5,
         animate = true
     }
 }
 
-config.Settings = HttpService:JSONDecode(HttpService:JSONEncode(config.Default))
+local FileName = "NOCT-xt/settings.json"
 
-config.FileName = "NOCT-xt/settings.json"
+config.Settings = {}
 
-function config:Save()
-    local json = HttpService:JSONEncode(config.Settings)
-    
-    if not isfolder("NOCT-xt") then makefolder("NOCT-xt") end
-    
-    writefile(self.FileName, json)
+function config:SaveSettings()
+    io.writetabletofile(config.FileName, config.Settings)
 end
 
-function config:Load()
-    if isfile(self.FileName) then
-        local content = readfile(self.FileName)
-        local success, decoded = pcall(function() return HttpService:JSONDecode(content) end)
-        
-        if success and decoded then
-            for key, value in pairs(decoded) do
-                if config.Settings[key] ~= nil then
-                    if type(value) == "table" and type(config.Settings[key]) == "table" then
-                        for setting, val in pairs(value) do
-                            config.Settings[key][setting] = val
-                        end
-                    else
-                        config.Settings[key] = value
-                    end
-                end
-            end
-        else
-            warn("Failed to decode config JSON")
-        end
-    else
-        self:Save()
-    end
+function config:LoadSettings()
+    config.Settings = isfile(config.FileName) and io.loadtablefromfile(config.FileName) or config.Default
 end
 
 config.dependencies = {
@@ -72,6 +47,7 @@ config.dependencies = {
     "frames/ValueEditor.lua",
     "methods/environment.lua",
     "methods/fileimport.lua",
+    "methods/getimage.lua",
     "methods/string.lua",
     "methods/table.lua",
     "methods/userdata.lua",
@@ -84,20 +60,24 @@ config.dependencies = {
     "modules/UpvalueScanner.lua",
     "objects/Closure.lua",
     "objects/Constant.lua",
-    "objects/Instance.lua",
     "objects/LocalScript.lua",
     "objects/ModuleScript.lua",
     "objects/Remote.lua",
-    "objects/Remote.lua",
     "objects/Upvalue.lua",
+    "ui/images/Auto-Scroll.png",
+    "ui/images/Back.png",
+    "ui/images/Class Icons.png",
+    "ui/images/Closure Scanner.png",
     "ui/images/Home.png",
     "ui/images/Instance Explorer.png",
+    "ui/images/Links.png",
     "ui/images/PlaceHolder.png",
     "ui/images/Remote Spy.png",
+    "ui/images/Script Searcher.png",
     "ui/images/Scroll Bar.png",
     "ui/images/Settings.png",
+    "ui/images/Snapshots.png",
     "ui/create.lua",
-    "ui/sizing.lua",
     "ui/uibuilder.lua"
 }
 

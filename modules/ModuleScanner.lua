@@ -1,5 +1,5 @@
 local ModuleScanner = {}
-local ModuleScript = import("objects/ModuleScript")
+local ModuleScript = modules.moduleScriptObject
 
 local requiredMethods = {
     ["getMenv"] = true,
