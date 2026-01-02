@@ -63,11 +63,10 @@ print("Starting NOCT-xt")
 if success then
 print("Successfully loaded More Library")
 libraryChunk.loadmodules()
-local HttpService = game:GetService("HttpService")
 local environment = gettenv(coroutine.running())
 
 environment["LoadingUImod"] = io.requirefileorget("NOCT-xt/frames/Loading.lua", "https://raw.githubusercontent.com/Sleve-m/NOCT-xt/main/frames/Loading.lua")
-
+while typeof(LoadingUImod) == "function" do wait(0.2) end
 local noctxt = Instance.new("ScreenGui", gethui())
 noctxt.Name = "NOCTxt"
 local LoadingUI = LoadingUImod.createLoadingUI()
@@ -87,6 +86,7 @@ local function useMethods(module)
         end
     end
 end
+
 environment.NOCT = {
     modules = {},
     UIS = {},
