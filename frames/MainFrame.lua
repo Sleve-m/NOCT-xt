@@ -1,5 +1,7 @@
 local MainFrame = {}
 
+local RunService = game:GetService("RunService")
+
 local createUI = modules.createUI
 
 local udpix, sudpix, sUDim2 = createUI.udpix, createUI.sudpix, createUI.sUDim2
@@ -13,6 +15,9 @@ function MainFrame.createMainFrame()
     local border = createUI.createFrame(minimize, sudpix(282,162), udpix(0,0), false)
     Instance.modify(border, {BackgroundColor3 = Color3.new(1,1,1), BackgroundTransparency = 0.5})
     createUI.createGrad(border, createUI.colorgrads[2], 45)
+    RunService.Heartbeat:Connect(function()
+        border.UIGradient.Rotation += 1
+    end)
 
     minimize.MouseButton1Click:Connect(function()
         border.Visible = not border.Visible
@@ -59,7 +64,8 @@ function MainFrame.createMainFrame()
         "Script Viewer",
         "Settings",
         "Upvalue Scanner",
-        "Value Editor"
+        "Value Editor",
+        "Function Watcher"
     }
 
     local subframefolder = Instance.new("Folder", main)
@@ -73,6 +79,7 @@ function MainFrame.createMainFrame()
     "Remote Spy",
     "Script Searcher",
     "Closure Scanner",
+    "Function Watcher",
     "Settings",
     "Home"
     }

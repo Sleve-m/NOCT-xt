@@ -1,4 +1,4 @@
-RemoteSpy = {}
+local RemoteSpy = {}
 
 local createUI = modules.createUI
 

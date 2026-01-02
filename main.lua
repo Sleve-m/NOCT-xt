@@ -15,7 +15,7 @@ LoadingUI.TextLabel.Text = "Loading Modules..."
 task.wait()
 io.requirefile("NOCT-xt/modules/ModuleLoader.lua").loadModules()
 
-LoadingUI.TextLabel.Text = "Drawing UI..."
+LoadingUI.TextLabel.Text = "Setting up frames..."
 task.wait()
 local mainframe = modules.UIBuilder.buildUI()
 getgenv()["mainframe"] = mainframe
@@ -29,6 +29,9 @@ modules.sVModule.setup()
 LoadingUI.TextLabel.Text = "Setting up remote spy..."
 task.wait()
 modules.rSModule.setup()
+LoadingUI.TextLabel.Text = "Setting up function watcher..."
+task.wait()
+modules.fWModule.setup()
 
 LoadingUI.TextLabel:Destroy()
 startupsound:Play()

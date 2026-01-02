@@ -2,7 +2,7 @@ local HttpService = game:GetService("HttpService")
 
 local config = {}
 
-config.Version = "v1.0.0.0a3" -- Do not touch, this is used by updater.lua to autoupdate the script
+config.Version = "v1.0.0.0a4" -- Do not touch, this is used by updater.lua to autoupdate the script
 
 config.Default = {
     controls = {
@@ -41,6 +41,7 @@ config.dependencies = {
     "main.lua",
     "assets/sound/Start-Up.wav",
     "frames/Closure.lua",
+    "frames/FunctionWatcher.lua",
     "frames/InstanceExplorer.lua",
     "frames/Loading.lua",
     "frames/LogViewer.lua",
@@ -59,6 +60,7 @@ config.dependencies = {
     "methods/userdata.lua",
     "modules/ClosureSpy.lua",
     "modules/ConstantScanner.lua",
+    "modules/FunctionWatcher.lua",
     "modules/InstanceExplorer.lua",
     "modules/LogViewer.lua",
     "modules/ModuleScanner.lua",
@@ -75,6 +77,7 @@ config.dependencies = {
     "ui/images/Back.png",
     "ui/images/Class Icons.png",
     "ui/images/Closure Scanner.png",
+    "ui/images/Function Watcher.png",
     "ui/images/Home.png",
     "ui/images/Instance Explorer.png",
     "ui/images/Links.png",

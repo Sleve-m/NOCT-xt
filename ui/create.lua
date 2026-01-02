@@ -203,6 +203,7 @@ function CreateUI.makeDraggable(a, b)
 end
 
 function CreateUI.swaptoframe(frame)
+	frame.Parent.Parent.TextLabel.Text = frame.Name
 	for _, currFrame in pairs(subframes:GetChildren()) do
 		currFrame.Visible = currFrame == frame and true or false
 	end

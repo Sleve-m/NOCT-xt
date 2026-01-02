@@ -21,6 +21,9 @@ function UIBuilder.buildUI()
 
     local ScriptSearcherUI = modules.sSBuilder.createScriptSearcher()
 
+    local FunctionWatcherUI = modules.fWBuilder.createFunctionWatcher()
+    parentall(FunctionWatcherUI, subframefolder["Function Watcher"])
+    
     local SettingsUI = modules.sBuilder.createSettings()
 
     local HomeUI = modules.hBuilder.createHome()
@@ -33,7 +36,8 @@ function UIBuilder.buildUI()
         CSUI = ClosureScannerUI,
         SUI = SettingsUI,
         HUI = HomeUI,
-        LVUI = LogViewerUI
+        LVUI = LogViewerUI,
+        FWUI = FunctionWatcherUI
     }
     
     return mainframe
