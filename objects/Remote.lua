@@ -103,7 +103,7 @@ end
 
 function Remote.incrementCalls(remote, vargs, timestamp)
     remote.Calls = remote.Calls + 1
-    table.insert(remote.Logs, {Args = vargs, TimeStamp = timestamp})
+    table.insert(remote.Logs, 1, {Args = vargs, TimeStamp = timestamp})
 end
 
 function Remote.decrementCalls(remote, vargs)

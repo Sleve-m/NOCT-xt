@@ -40,9 +40,9 @@ local function sortBy(t, sortType)
 end
 
 local sortorders = {
-    [1] = {sortBy, "TimeStamp", "Recent"}, -- Sorts by latest log
-    [2] = {sortBy, "Name",      "abc"},    -- Sorts A-Z
-    [3] = {sortBy, "Calls",     "Most"}    -- Sorts by call count
+    [1] = {sortBy, "TimeStamp", "Recent"},
+    [2] = {sortBy, "Name",      "abc"},
+    [3] = {sortBy, "Calls",     "Most"}
 }
 
 local currentsort = 1
@@ -255,10 +255,10 @@ local function processCalls()
             remote = remoteObj.new(call.Instance)
             currentRemotes[call.Instance] = remote
             table.insert(remoteList, 1, call.Instance)
-            sortorders[currentsort][1](remoteList, sortorders[currentsort][2])
             drawRemotes()
         end
         remoteObj.incrementCalls(remote, vargs, timestamp)
+        sortorders[currentsort][1](remoteList, sortorders[currentsort][2])
     end
     drawRemotes()
 end

@@ -203,9 +203,7 @@ function getAllProperties(inst)
 end
 
 function refreshProperties()
-    for i, v in pairs(getChilds(ui.propscroller, false)) do
-        v:Destroy()
-    end
+    Instance.DestroyChildren(ui.propscroller)
     ui.propscroller.CanvasPosition = Vector2.new(0,0)
     if #selectedInstances == 1 and selectedInstances[1] ~= nil then
         local props = getAllProperties(selectedInstances[1])
@@ -233,12 +231,8 @@ function refreshProperties()
 end
 
 function refreshInstList(totop)
-    for i, v in pairs(getChilds(ui.instscroller, false)) do
-        v:Destroy()
-    end
-    for i, v in pairs(getChilds(ui.pathframe, false)) do
-        v:Destroy()
-    end
+    Instance.DestroyChildren(ui.instscroller)
+    Instance.DestroyChildren(ui.pathframe)
 
     ui.instscroller.CanvasPosition = totop and Vector2.new(0,0) or ui.instscroller.CanvasPosition
 

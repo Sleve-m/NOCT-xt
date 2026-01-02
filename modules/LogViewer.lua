@@ -6,9 +6,8 @@ local sudpix, udpix, sUDim2 = createUI.sudpix, createUI.udpix, createUI.sUDim2
 
 function LogViewer.viewlogs(t)
     local ui = uis.LVUI
-    for i, v in pairs(ui.argsscroller:GetChildren()) do 
-        v:Destroy()
-    end
+    Instance.DestroyChildren(ui.argsscroller)
+    Instance.DestroyChildren(ui.logsscroller)
 
     local function getArgString(data)
         if typeof(data) == "table" then
