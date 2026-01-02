@@ -52,6 +52,7 @@ Loading.Config = {
 function Loading:CreateParticle(parent, startPos)
 	if not parent then return end
     local myfs = self.Config.FloatSpeed*((math.random(0,1)*2)-1)
+	local myss = self.Config.SwaySpeed*((math.random(0,1)*2)-1)
 	
 	startPos = startPos or UDim2.new(0.5, 0, 0.5, 0)
 	
@@ -89,9 +90,11 @@ function Loading:CreateParticle(parent, startPos)
 		
 		local yOffset = -elapsed * myfs
 		
-		local xSway = math.sin((elapsed * self.Config.SwaySpeed) + seed) * self.Config.SwayIntensity
+		local xSway = math.sin((elapsed * myss) + seed) * self.Config.SwayIntensity
 		
 		p.Position = (startPos + UDim2.new(0, xSway, 0, yOffset)) + mainframe.Position
+
+		p.Size = UDim2.new(0, math.cos(size)*6, 0, math.cos(size)*6)
 		
 		local transparency = 0
 		if elapsed < 0.5 then
