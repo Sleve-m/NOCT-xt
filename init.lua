@@ -53,6 +53,7 @@ if not isfile("MoreLibrary/init.lua") then
         end
     end
     download_repo("Sleve-m", "More-Library", "main", "MoreLibrary")
+    wait(1)
 end
 local MoreLibrary = loadstring(readfile("MoreLibrary/init.lua"))
 local success, libraryChunk = pcall(MoreLibrary)
