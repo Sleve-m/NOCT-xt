@@ -1,5 +1,6 @@
 local HttpService = game:GetService("HttpService")
 if not isfile("MoreLibrary/init.lua") then
+    local downloadfinished = false
     local function download_repo(owner, repo, branch, target_folder)
         local branch = branch or "main"
         local target_folder = target_folder or repo
@@ -51,9 +52,10 @@ if not isfile("MoreLibrary/init.lua") then
                 end)
             end
         end
+        downloadfinished = true
     end
     download_repo("Sleve-m", "More-Library", "main", "MoreLibrary")
-    wait(1)
+    while not downloadfinished do wait(0.2) end
 end
 local MoreLibrary = loadstring(readfile("MoreLibrary/init.lua"))
 local success, libraryChunk = pcall(MoreLibrary)
