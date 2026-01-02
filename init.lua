@@ -1,6 +1,16 @@
 local HttpService = game:GetService("HttpService")
+
+local environment = gettenv(coroutine.running())
+
+environment["LoadingUImod"] = loadstring(isfile("NOCT-xt/frames/Loading.lua") and readfile("NOCT-xt/frames/Loading.lua") or game:HttpGet("https://raw.githubusercontent.com/Sleve-m/NOCT-xt/main/frames/Loading.lua"))()
+local noctxt = Instance.new("ScreenGui", gethui())
+noctxt.Name = "NOCTxt"
+local LoadingUI = LoadingUImod.createLoadingUI()
+environment["LoadingUI"] = LoadingUI
+LoadingUI.Parent = noctxt
+
 if not isfile("MoreLibrary/init.lua") then
-    local downloadfinished = false
+    LoadingUImod.Text = "Downloading More Library"
     local function download_repo(owner, repo, branch, target_folder)
         local branch = branch or "main"
         local target_folder = target_folder or repo
@@ -39,24 +49,19 @@ if not isfile("MoreLibrary/init.lua") then
                 end
             elseif item.type == "blob" then
                 local raw_url = "https://raw.githubusercontent.com/"..owner.."/"..repo.."/"..branch.."/"..item.path
-                task.spawn(function()
-                    local success, content = pcall(function() 
-                        return game:HttpGet(raw_url) 
-                    end)
-                    if success then
-                        writefile(path, content)
-                        file_count = file_count + 1
-                    else
-                        warn("http.downloadrepo: Failed to download file: " .. item.path)
-                    end
+                local success, content = pcall(function() 
+                    return game:HttpGet(raw_url) 
                 end)
+                if success then
+                    writefile(path, content)
+                    file_count = file_count + 1
+                else
+                    warn("http.downloadrepo: Failed to download file: " .. item.path)
+                end
             end
         end
-        downloadfinished = true
     end
     download_repo("Sleve-m", "More-Library", "main", "MoreLibrary")
-    while not downloadfinished do wait(0.2) end
-    while not isfile("MoreLibrary/init.lua") do wait(0.2) end
 end
 local MoreLibrary = loadstring(readfile("MoreLibrary/init.lua"))
 local success, libraryChunk = pcall(MoreLibrary)
@@ -64,15 +69,6 @@ print("Starting NOCT-xt")
 if success then
 print("Successfully loaded More Library")
 libraryChunk.loadmodules()
-local environment = gettenv(coroutine.running())
-
-environment["LoadingUImod"] = io.requirefileorget("NOCT-xt/frames/Loading.lua", "https://raw.githubusercontent.com/Sleve-m/NOCT-xt/main/frames/Loading.lua")
-while typeof(LoadingUImod) == "function" do wait(0.2) end
-local noctxt = Instance.new("ScreenGui", gethui())
-noctxt.Name = "NOCTxt"
-local LoadingUI = LoadingUImod.createLoadingUI()
-environment["LoadingUI"] = LoadingUI
-LoadingUI.Parent = noctxt
 
 if not isfolder("NOCT-xt") then
     LoadingUI.TextLabel.Text = "Installing NOCT xt..."
