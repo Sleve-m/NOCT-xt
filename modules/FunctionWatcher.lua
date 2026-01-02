@@ -15,7 +15,6 @@ function FunctionWatcher.setup()
 
     writefile("NOCT-xt/ACLogs.txt", "")
     RunService.Heartbeat:Connect(function()
-        if processNeeded then processCalls(); processNeeded = false end
         if alertprint ~= "" then 
             --print("Alert: "..alertprint)
             appendfile("NOCT-xt/ACLogs.txt" ,"\n"..tostring(os.clock()).."\t : "..alertprint)

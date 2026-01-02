@@ -261,6 +261,10 @@ function RemoteSpy.setup()
         drawRemotes()
     end
 
+    RunService.Heartbeat:Connect(function()
+        if processNeeded then processCalls(); processNeeded = false end
+    end)
+
     local originalNC
 
     local newNC
