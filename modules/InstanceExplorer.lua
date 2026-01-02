@@ -2,8 +2,6 @@ local InstanceExplorer = {}
 
 local ReflectionsService = game:GetService("ReflectionService")
 
-local ui = {}
-
 local createUI = modules.createUI
 local scriptViewer = modules.sVModule
 
@@ -16,7 +14,7 @@ local snapshots = Instance.new("Folder", nil)
 snapshots.Name = "Snapshots"
 local instClipboard = {}
 
-local ui = environment.NOCTUIS.IEUI
+local ui = uis.IEUI
 
 local iconsmapping = { 
 	["Instance"]        = Vector2.new(0,0), 
@@ -50,7 +48,7 @@ local function applyIcon(img, inst)
 	img.ImageRectOffset = Vector2.new(index.X*iconsize, index.Y*iconsize)
 end
 
-function newSelectionOptions(pos, isSelected)
+local function newSelectionOptions(pos, isSelected)
     local seloptsframe = createUI.createSelectionOptionFrame(pos)
     local object = #selectedInstances == 1 and selectedInstances[1] or nil
 
@@ -235,7 +233,6 @@ function refreshProperties()
 end
 
 function refreshInstList(totop)
-    -- 1. Clear Lists
     for i, v in pairs(getChilds(ui.instscroller, false)) do
         v:Destroy()
     end
@@ -243,12 +240,8 @@ function refreshInstList(totop)
         v:Destroy()
     end
 
-    -- 2. RESET SCROLL
     ui.instscroller.CanvasPosition = totop and Vector2.new(0,0) or ui.instscroller.CanvasPosition
 
-    -- 3. ENSURE LAYOUT (The fix for "weird" positioning)
-    -- This replaces your manual 'newx' calculation loops. 
-    -- It automatically stacks buttons horizontally.
     if not ui.pathframe:FindFirstChildOfClass("UIListLayout") then
         local layout = Instance.new("UIListLayout")
         layout.Parent = ui.pathframe
@@ -259,33 +252,24 @@ function refreshInstList(totop)
 
     local children = getChilds(currentPath[#currentPath], false)
 
-    -- 4. CREATE BREADCRUMBS
     for i, v in pairs(currentPath) do
         local newpathbtn = ui.examplepathitem:Clone()
         
-        -- Set Text
         local instName = (typeof(v) == "Instance" and v.Name or "Search")
         newpathbtn.Text = instName .. "/"
         
-        -- Sizing Logic
-        -- We parent it first so AutomaticSize calculates correctly relative to the container
         newpathbtn.Parent = ui.pathframe
-        newpathbtn.LayoutOrder = i -- Ensures they stay in order
+        newpathbtn.LayoutOrder = i 
         newpathbtn.Visible = true
 
         newpathbtn.AutomaticSize = Enum.AutomaticSize.X
         
-        -- Optional: Cap the size if it gets too big (requires manual check after frame update)
-        -- A better way is using a UISizeConstraint inside the button prefab, 
-        -- but this keeps your logic simple:
         if newpathbtn.TextBounds.X > 80 then
              newpathbtn.AutomaticSize = Enum.AutomaticSize.None
              newpathbtn.Size = sudpix(80, 15)
         end
 
-        -- Click Logic
         newpathbtn.MouseButton1Click:Connect(function()
-            -- FIX: Iterate BACKWARDS when removing to avoid skipping shifting indices
             for n = #currentPath, i + 1, -1 do
                 table.remove(currentPath, n)
             end
@@ -295,10 +279,8 @@ function refreshInstList(totop)
 
     refreshProperties()
     
-    -- Update Canvas Size
     ui.instscroller.CanvasSize = sudpix(0, 12 * #children)
     
-    -- Back Button Logic
     ui.back.ImageColor3 = #currentPath > 1 and Color3.fromRGB(255,255,255) or Color3.fromRGB(100,100,100)
     ui.back.Interactable = #currentPath > 1
     

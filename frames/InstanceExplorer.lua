@@ -1,7 +1,5 @@
 InstanceExplorer = {}
 
-local modules = getgenv().NOCTmodules
-
 local createUI = modules.createUI
 
 local sudpix, udpix, sUDim2 = createUI.sudpix, createUI.udpix, createUI.sUDim2

@@ -101,9 +101,9 @@ function Remote.areArgsIgnored(remote, args)
     end
 end
 
-function Remote.incrementCalls(remote, vargs)
+function Remote.incrementCalls(remote, vargs, timestamp)
     remote.Calls = remote.Calls + 1
-    table.insert(remote.Logs, vargs)
+    table.insert(remote.Logs, {Args = vargs, TimeStamp = timestamp})
 end
 
 function Remote.decrementCalls(remote, vargs)

@@ -2,7 +2,7 @@ local HttpService = game:GetService("HttpService")
 
 local config = {}
 
-config.Version = "v1.0.0.0a2" -- Do not touch, this is used by updater.lua to autoupdate the script
+config.Version = "v1.0.0.0a3" -- Do not touch, this is used by updater.lua to autoupdate the script
 
 config.Default = {
     controls = {
@@ -22,11 +22,16 @@ local FileName = "NOCT-xt/settings.json"
 config.Settings = {}
 
 function config:SaveSettings()
-    io.writetabletofile(config.FileName, config.Settings)
+    io.writetabletofile(FileName, config.Settings)
 end
 
 function config:LoadSettings()
-    config.Settings = isfile(config.FileName) and io.loadtablefromfile(config.FileName) or config.Default
+    if isfile(FileName) then
+        config.Settings = io.loadtablefromfile(FileName)
+    else 
+        config.Settings = table.clone(config.Default)
+        config:SaveSettings()
+    end
 end
 
 config.dependencies = {
@@ -34,6 +39,7 @@ config.dependencies = {
     "config.lua",
     "updater.lua",
     "main.lua",
+    "assets/sound/Start-Up.wav",
     "frames/Closure.lua",
     "frames/InstanceExplorer.lua",
     "frames/Loading.lua",
@@ -54,6 +60,7 @@ config.dependencies = {
     "modules/ClosureSpy.lua",
     "modules/ConstantScanner.lua",
     "modules/InstanceExplorer.lua",
+    "modules/LogViewer.lua",
     "modules/ModuleScanner.lua",
     "modules/RemoteSpy.lua",
     "modules/ScriptScanner.lua",

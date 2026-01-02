@@ -6,8 +6,9 @@ local udpix, sudpix, sUDim2 = createUI.udpix, createUI.sudpix, createUI.sUDim2
 
 function MainFrame.createMainFrame()
     local minimize = createUI.createText(nil, "NOCT xt", sudpix(50,15), sUDim2(0.5,-140,0.5,-80), true)
-    Instance.modify(minimize, {ZIndex = 5, FontFace.Weight = Enum.FontWeight.Bold})
-    createUI.createGrad(minimize, createUI.colorgrads[1], 0)
+    Instance.modify(minimize, {ZIndex = 5})
+    minimize.FontFace.Weight = Enum.FontWeight.Bold
+    createUI.createGrad(minimize, createUI.colorgrads[1])
 
     local border = createUI.createFrame(minimize, sudpix(282,162), udpix(0,0), false)
     Instance.modify(border, {BackgroundColor3 = Color3.new(1,1,1), BackgroundTransparency = 0.5})
@@ -20,6 +21,8 @@ function MainFrame.createMainFrame()
 
     local main = createUI.createFrame(border, sudpix(282,162)-udpix(2,2), udpix(1,1), false)
     createUI.makeDraggable(main, minimize)
+
+    createUI.createGrad(main, ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(0,0,0)), ColorSequenceKeypoint.new(1, Color3.new(0,0,0))}), 45)
 
     local titletext = createUI.createText(main, "Home", sudpix(50,15), sUDim2(0.5,-25,0,0), false)
     titletext.TextSize = createUI.sNumber(8)
@@ -65,7 +68,6 @@ function MainFrame.createMainFrame()
     for _, subframe in pairs(subframeslist) do
         createSubFrame(subframe, subframefolder)
     end
-
     local frameswapbuttons = {
     "Instance Explorer",
     "Remote Spy",
@@ -74,7 +76,6 @@ function MainFrame.createMainFrame()
     "Settings",
     "Home"
     }
-
     local frameswapbuttonfolder = Instance.new("Folder", main)
     frameswapbuttonfolder.Name = "FrameSwap Button Folder"
     for _, frameswapbutton in pairs(frameswapbuttons) do
@@ -86,7 +87,6 @@ function MainFrame.createMainFrame()
             titletext
         )
     end
-    
     return main
 end
 
