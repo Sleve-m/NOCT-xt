@@ -1,3 +1,4 @@
+local HttpService = game:GetService("HttpService")
 if not isfile("MoreLibrary/init.lua") then
     local function download_repo(owner, repo, branch, target_folder)
         local branch = branch or "main"
